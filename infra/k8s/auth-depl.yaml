@@ -15,6 +15,12 @@ spec:
       containers:
         - name: auth
           image: madagos/auth
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
 ---
 # Path: infra/k8s/auth-srv.yaml
 apiVersion: v1
