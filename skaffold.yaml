@@ -16,7 +16,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: madagos/client
+    - image: madagos/ticketing-client
       context: client
       docker:
         dockerfile: Dockerfile

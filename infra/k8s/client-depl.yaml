@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: madagos/client
+          image: madagos/ticketing-client
 ---
 # Path: infra/k8s/client-srv.yaml
 apiVersion: v1
