@@ -14,7 +14,7 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: 'src/**/*.ts'
+          - src: "src/**/*.ts"
             dest: .
     - image: madagos/ticketing-client
       context: client
@@ -23,4 +23,12 @@ build:
       sync:
         manual:
           - src: '**/*.js'
+            dest: .
+    - image: madagos/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
             dest: .
