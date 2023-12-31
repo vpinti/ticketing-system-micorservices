@@ -1,7 +1,5 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import request from "supertest";
-import { app } from "../app";
 import jwt from "jsonwebtoken";
 
 // This is a global function that can be used in all the tests
@@ -10,6 +8,7 @@ import jwt from "jsonwebtoken";
 // and in auth/src/routes/__test__/signin.test.ts
 declare global {
     var signin: () => string[];
+    var createMongoId: () => string;
 }
 
 let mongo: any;
@@ -43,7 +42,7 @@ afterAll(async () => {
 global.signin = () => {
     // Build a JWT payload. { id, email }
     const payload = {
-        id: "1lk24j124l",
+        id: createMongoId(),
         email: 'test@test.com'
     };
 
@@ -62,3 +61,7 @@ global.signin = () => {
     // return a string thats the cookie with the encoded data
     return [`session=${base64}`];
 };
+
+global.createMongoId = () => {
+    return new mongoose.Types.ObjectId().toHexString();
+}
