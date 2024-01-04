@@ -11,6 +11,8 @@ declare global {
     var createMongoId: () => string;
 }
 
+jest.mock("../nats-wrapper");
+
 let mongo: any;
 
 // This is a hook function that runs before all tests
@@ -24,6 +26,8 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+    jest.clearAllMocks();
+    
     // This deletes all the collections in the database
     const collections = await mongoose.connection.db.collections();
 
