@@ -3,7 +3,7 @@ import "express-async-errors";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
 import { errorHandler, NotFoundError, currentUser } from "@vpdgt/common";
-import { createTicketRouter } from "./routes/new";
+import { createTicketRouter } from "./routes/create";
 import { showTicketRouter } from "./routes/show";
 import { indexTicketRouter } from "./routes/index";
 import  { updateTicketRouter } from "./routes/update";
