@@ -5,11 +5,13 @@ import {
     NotFoundError,
     requireAuth,
     validateRequest,
-    OrderStatus
+    OrderStatus,
 } from "@vpdgt/common";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
+import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -46,7 +48,9 @@ router.post(
 
         // Calculate an expiration date for this order
         const expiration = new Date();
-        expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS);
+        expiration.setSeconds(
+            expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS
+        );
 
         // Build the order and save it to the database
         const order = Order.build({
@@ -58,6 +62,16 @@ router.post(
         await order.save();
 
         // Publish an event saying that an order was created
+        new OrderCreatedPublisher(natsWrapper.client).publish({
+            id: order.id,
+            status: order.status,
+            userId: order.userId,
+            expiresAt: order.expiresAt.toISOString(), // Convert to ISO string to make sure that the dates are the same
+            ticket: {
+                id: ticket.id,
+                price: ticket.price,
+            },
+        });
 
         res.status(201).send(order);
     }
