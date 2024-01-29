@@ -57,7 +57,6 @@ router.post(
             userId: req.currentUser!.id,
             status: OrderStatus.Created,
             expiresAt: expiration,
-            version: 0,
             ticket,
         });
         await order.save();
@@ -65,7 +64,7 @@ router.post(
         // Publish an event saying that an order was created
         new OrderCreatedPublisher(natsWrapper.client).publish({
             id: order.id,
-            version: 0,
+            version: order.version,
             status: order.status,
             userId: order.userId,
             expiresAt: order.expiresAt.toISOString(), // Convert to ISO string to make sure that the dates are the same
