@@ -45,7 +45,6 @@ it("sets the orderId of the ticket", async () => {
     
     // Write assertions to make sure a ticket was created!
     const updatedTicket = await Ticket.findById(ticket.id);
-    console.log(ticket)
     expect(updatedTicket!.orderId).toEqual(data.id);
 });
 
