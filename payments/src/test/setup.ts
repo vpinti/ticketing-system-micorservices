@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 // It is used in auth/src/routes/__test__/current-user.test.ts
 // and in auth/src/routes/__test__/signin.test.ts
 declare global {
-    var signin: () => string[];
+    var signin: (id?: string) => string[];
     var createMongoId: () => string;
 }
 
@@ -27,7 +27,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
     jest.clearAllMocks();
-    
+
     // This deletes all the collections in the database
     const collections = await mongoose.connection.db.collections();
 
@@ -43,11 +43,11 @@ afterAll(async () => {
     await mongoose.connection.close();
 });
 
-global.signin = () => {
+global.signin = (id?: string) => {
     // Build a JWT payload. { id, email }
     const payload = {
-        id: createMongoId(),
-        email: 'test@test.com'
+        id: id || createMongoId(),
+        email: "test@test.com",
     };
 
     // Create the JWT!
@@ -68,4 +68,4 @@ global.signin = () => {
 
 global.createMongoId = () => {
     return new mongoose.Types.ObjectId().toHexString();
-}
+};
