@@ -23,7 +23,7 @@ router.post(
         const order = await Order.findById(orderId);
 
         if (!order) {
-            return new NotFoundError();
+            throw new NotFoundError();
         }
 
         if (order.userId !== req.currentUser!.id) {
